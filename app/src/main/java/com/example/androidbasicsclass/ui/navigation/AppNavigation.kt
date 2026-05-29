@@ -22,10 +22,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.androidbasicsclass.ui.firstpartialpdm1.homeFirstPartialPDM1.view.HomeFirstPartialPDM1View
+import com.example.androidbasicsclass.ui.login.view.LoginView
 import com.example.androidbasicsclass.ui.personalinformation.homePersonalInformation.view.HomePersonalInformationView
 import com.example.androidbasicsclass.ui.secondpartialpdm1.homeSecondPartialPDM1.view.HomeSecondPartialPDM1View
+import com.example.androidbasicsclass.ui.thirdpartialids2.firstApiRequest.view.FirstApiRequestView
 import com.example.androidbasicsclass.ui.thirdpartialids2.homeThirdPartialIDS2.view.HomeThirdPartialIDS2View
 import com.example.androidbasicsclass.ui.thirdpartialpdm1.homeThirdPartialPDM1.view.HomeTHirdPartialPDM1View
+import java.util.concurrent.ConcurrentNavigableMap
 
 sealed class AppRoute(val route: String,val label: String,val icon: ImageVector){
     object ThirdPartialIDS2 : AppRoute("third_partial_ids2", "IDS2 P3", Icons.Filled.School)
@@ -43,9 +46,36 @@ private val TABS = listOf(
     AppRoute.PersonalInformation
 )
 
-
 @Composable
 fun AppNavigation(){
+    val rootNavController = rememberNavController()
+
+    NavHost(rootNavController,"login") {
+        composable("login"){
+            LoginView(
+                onLoginClick = {
+                    rootNavController.navigate("tabs") {
+                        popUpTo("login") {inclusive = true}
+                    }
+                }
+            )
+        }
+        composable("tabs") {
+            TabsScaffold(
+                onNavigateToFirstApiRequest = {
+                    rootNavController.navigate("first_api_request")
+                }
+            )
+        }
+        composable( "first_api_request" ) {
+            FirstApiRequestView(onBack = {rootNavController.popBackStack()})
+        }
+    }
+}
+
+
+@Composable
+private fun TabsScaffold(onNavigateToFirstApiRequest: () -> Unit){
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -79,7 +109,8 @@ fun AppNavigation(){
             startDestination = AppRoute.ThirdPartialIDS2.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(AppRoute.ThirdPartialIDS2.route) { HomeThirdPartialIDS2View()}
+            composable(AppRoute.ThirdPartialIDS2.route) {
+                HomeThirdPartialIDS2View(onNavigateToFirstApiRequest = onNavigateToFirstApiRequest)}
             composable(AppRoute.FirstPartialPDM1.route) { HomeFirstPartialPDM1View() }
             composable(AppRoute.SecondPartialPDM1.route) { HomeSecondPartialPDM1View()}
             composable(AppRoute.ThirdPartialPDM1.route) { HomeTHirdPartialPDM1View() }

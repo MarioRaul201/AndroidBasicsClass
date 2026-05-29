@@ -1,7 +1,10 @@
 package com.example.androidbasicsclass.ui.thirdpartialids2.homeThirdPartialIDS2.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,12 +15,17 @@ import com.example.androidbasicsclass.ui.thirdpartialids2.homeThirdPartialIDS2.v
 
 @Composable
 fun HomeThirdPartialIDS2View(
+    onNavigateToFirstApiRequest: () -> Unit = {},
     homeViewModel: HomeThirdPartialIDS2ViewModel = viewModel()
 ) {
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(text = "Third Partial IDS2")
+        Button(onClick = onNavigateToFirstApiRequest) {
+            Text("First API Request")
+        }
     }
 }

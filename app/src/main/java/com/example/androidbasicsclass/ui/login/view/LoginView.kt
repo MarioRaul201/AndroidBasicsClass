@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.example.androidbasicsclass.R
 
 @Composable
-fun LoginView() {
+fun LoginView(onLoginClick: () -> Unit) {
     // Variables de estado
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -46,7 +46,7 @@ fun LoginView() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -96,7 +96,7 @@ fun LoginView() {
 
         // Botón de inicio de sesión
         Button(
-            onClick = { /* Lógica de autenticación */ },
+            onClick = onLoginClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.login_button))
